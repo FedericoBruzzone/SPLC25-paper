@@ -12,17 +12,17 @@ Finally, we provide an overview of centrality measures in graph theory, which ar
 
 Rust is a systems programming language that focuses on safety, speed, and concurrency. It is designed to be memory-safe without using garbage collection. 
 This implies that pure Rust programs are free of null pointer dereferences, double frees as well as data races.
-The \emph{linear logic}~\cite{Girard87, Girard95} and \emph{linear types}~\cite{Wadler90, Odersky92}---which force the use of resources exactly once---inspired the ownership system in Rust.
-Rust incorporates the \emph{ownership} system into its type system as relaxed form of pure linear types to ensure type soundness.
-The ownership system ensures that there is only one \emph{owner} (the variable binding) for each piece of memory (a value) at any given time, and when the owner goes out of scope or is otherwise deallocated, the memory is deallocated as well. By leveraging the latter property, Rust supports user-defined destructors, enabling \emph{resource acquisition is initialization} (RAII) pattern proposed by~\citet{Stroustrup94}.
+The \emph{linear logic}~\cite{Girard87, Girard95} and \emph{linear types}~\cite{Wadler90, Odersky92}---which force the use of resources exactly once---inspired the \emph{ownership} system.
+Rust incorporates it into its type system as relaxed form of pure linear types to ensure type soundness.
+The ownership system ensures that there is only one \emph{owner} (the variable binding) for each piece of memory (a value) at any given time, and when the owner goes out of scope or is otherwise deallocated, the memory is deallocated as well. By leveraging the latter property, Rust supports user-defined destructors, enabling \emph{resource acquisition is initialization} (RAII) pattern proposed by Stroustrup~\cite{Stroustrup94}.
 The lifetime of the owned value is determined by the scope in which the owner takes ownership.
 An owner can \emph{move} (transfer) the ownership of the value to a new owner or \emph{borrow} the value to another part of the program.
 By \emph{moving} the ownership, the previous owner can no longer access the value.
-On the other hand, Rust support \emph{references} that allow the owner to \emph{borrow} the value avoiding the invalidation of the owner.
+On the other hand, Rust support \emph{references} that allow the owner to \emph{borrow} the value avoiding the its invalidation.
 Two kind of \emph{borrows} are supported: \emph{immutable} and \emph{mutable}.
-Multiple \emph{immutable borrow} can coexist, but only one \emph{mutable borrow} can exist at a time. The \emph{borrow checker} enforces these rules at compile time.
+Multiple \emph{immutable borrow} can coexist, but only one \emph{mutable borrow} can exist at a time. 
 These restrictions allow Rust to guarantee memory safety. Furthermore, the lifetime of a reference can not outlive (exceed) the lifetime of the owner, which ensures no dangling pointers.
-The Rust compiler enforces all these rules at compile time, thus avoiding a runtime overhead.
+The Rust compiler enforces all these rules at compile time also by performing \emph{borrow checking}, preserving the runtime performance of the compiled code.
 Despite the notable progress in the field of safe systems programming, Rust allows \inlinerust{unsafe} blocks to perform low-level operations that are not safe, such as dereferencing raw pointers.
 In Rust, the \inlinerust{unsafe} keyword signifies that the responsibility for preventing undefined behavior shifts from the compiler to the programmer. This ensures that undefined behavior cannot occur in safe Rust code, as the compiler enforces strict safety guarantees in all safe contexts.
 

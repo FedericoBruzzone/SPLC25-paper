@@ -1,0 +1,10 @@
+\ExplSyntaxOn
+\cs_new_eq:NN \Repeat \prg_replicate:nn
+\ExplSyntaxOff
+\makeatletter
+\ifdoubleblind\else%The default behavior is to disable title footnotes for doubleblind reviews (the edit will fail if applied with the doubleblind option)
+    \patchcmd{\tnotetext}{\ifcase\c@tnote\or$\star$\or$\star\star$\fi}{\Repeat{\the\c@tnote}{\tnotemarksymbol}}{}{\@latex@error{Failed to patch \string\tnotetext}}
+    \patchcmd{\tnotemark}{\expandafter\ifcase\elsRef{\mytmark}\or$^{\star}$\or$^{,\star\star}$\fi}{\textsuperscript{\expandafter\ifnum\elsRef{\mytmark}>1,\fi\expandafter\Repeat\expandafter{\elsRef{\mytmark}}{\tnotemarksymbol}}}{}{\@latex@error{Failed to patch \string\tnotemark}}%
+\fi
+\makeatother
+\newcommand{\tnotemarksymbol}{\dag}

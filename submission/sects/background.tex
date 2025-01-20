@@ -26,8 +26,19 @@ The Rust compiler enforces all these rules at compile time also by performing \e
 Despite the notable progress in the field of safe systems programming, Rust allows \inlinerust{unsafe} blocks to perform low-level operations that are not safe, such as dereferencing raw pointers.
 In Rust, the \inlinerust{unsafe} keyword signifies that the responsibility for preventing undefined behavior shifts from the compiler to the programmer. This ensures that undefined behavior cannot occur in safe Rust code, as the compiler enforces strict safety guarantees in all safe contexts.
 
-\subsection{Software Product Lines}\label{subsec:bg:spl}
+\subsection{Product Families}\label{subsec:bg:spl}
 
+In product families the similarities and differences are characterized by a set of features \(F = \{f_1, f_2, \ldots, f_m\}\) where each feature \(f_i \subseteq A\).
+A feature is a unit that provides a piece of functionality that satisfies a requirement or represents a design decision and fixed \(i\) and \(j\) such that \(i \neq j \centernot\implies f_i \cap f_j = \emptyset\).
+A product line, or rather a family of products, is a set of products \(P = \{p_1, p_2, \ldots, p_k\}\) where each product \(p_i \subseteq F\) is a set of features and for fixed \(i\) and \(j\) such that \(i \neq j\), it does not necessarily follow that \(p_i \cap p_j = \emptyset\).
+A key task in SPL engineering is feature modeling, which involves creating and maintaining a \emph{feature model}. The concept of feature model was first introduced by~\citet{Kang90} in the FODA method and serves to represent the variability of a system through its features and their interdependencies. In SPLs, the feature model formalism is essential for configuring software products by defining valid feature sets, known as \emph{configurations}. 
+A configuration \(c:F\rightarrow \{0, 1\}\) is a characteristic function over \(F\) that maps each feature to a boolean value. 
+A feature $f$ is considered \emph{active} if it belongs to a configuration \(c\) such that \(c(f)=1\), otherwise it is \emph{inactive}.
+The structure of a feature model implicitly captures feature dependencies by specifying mandatory, optional, alternative, and grouped features. These dependencies are often represented as parent-child relationships, where a feature can only be \emph{active} if all its parent features are also \emph{active}. 
+A configuration \(c\) is deemed \emph{valid} if and only if \(\forall f_i\in F\mid c(f_i)=1\implies\exists p\in P\mid f_i\in p\).
+Given a product \(p_i \in P\) we say that all products \(p_j \in P\) such that \(p_j \neq p_i\) are variants of \(p_i\) denoted as \(v_j\).
+It is worth noting that a family of products \(P\) can theoretically contain up to \(2^{|F|}\) variants, as described by~\citet{Krueger06}. This exponential growth in potential configurations has paved the way for the development of techniques to manage and test SPLs effectively~\cite{Pohl06}.
+Numerous approaches, recently analyzed by~\citet{Agh24}, have been proposed to address the challenges of testing SPLs, including product sampling~\cite{Patel13, AlHajjaji19, Lee19} and combinatorial testing~\cite{Oster10, Lochau12}.
 
 \subsection{Centrality Measures}\label{subsec:bg:centrality}
 

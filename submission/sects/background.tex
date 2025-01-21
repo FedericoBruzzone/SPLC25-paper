@@ -6,7 +6,7 @@ We start by introducing the Rust programming language and its ownership system.
 % SPL and SPL testing
 Then, we introduce the concept of software product lines (SPLs) and the importance of testing SPLs.
 % Centrality measures
-Finally, we provide an overview of centrality measures in graph theory, which are necessary to understand the approach we propose in this paper.
+Finally, we provide an overview of centrality measures used in network analysis.
 
 \subsection{The Rust Programming Language}\label{subsec:bg:rust}
 
@@ -23,14 +23,17 @@ Two kind of \emph{borrows} are supported: \emph{immutable} and \emph{mutable}.
 Multiple \emph{immutable borrow} can coexist, but only one \emph{mutable borrow} can exist at a time. 
 These restrictions allow Rust to guarantee memory safety. Furthermore, the lifetime of a reference can not outlive (exceed) the lifetime of the owner, which ensures no dangling pointers.
 The Rust compiler enforces all these rules at compile time also by performing \emph{borrow checking}, preserving the runtime performance of the compiled code.
-Despite the notable progress in the field of safe systems programming, Rust allows \inlinerust{unsafe} blocks to perform low-level operations that are not safe, such as dereferencing raw pointers.
-In Rust, the \inlinerust{unsafe} keyword signifies that the responsibility for preventing undefined behavior shifts from the compiler to the programmer. This ensures that undefined behavior cannot occur in safe Rust code, as the compiler enforces strict safety guarantees in all safe contexts.
+Despite the notable progress in the field of safe systems programming, Rust allows \mintinline{Rust}{unsafe} blocks to perform low-level operations that are not safe, such as dereferencing raw pointers.
+In Rust, the \mintinline{Rust}{unsafe} keyword signifies that the responsibility for preventing undefined behavior shifts from the compiler to the programmer. This ensures that undefined behavior cannot occur in safe Rust code, as the compiler enforces strict safety guarantees in all safe contexts.
 
 \subsection{Product Families}\label{subsec:bg:spl}
 
-In product families the similarities and differences are characterized by a set of features \(F = \{f_1, f_2, \ldots, f_m\}\) where each feature \(f_i \subseteq A\).
-A feature is a unit that provides a piece of functionality that satisfies a requirement or represents a design decision and fixed \(i\) and \(j\) such that \(i \neq j \centernot\implies f_i \cap f_j = \emptyset\).
-A product line, or rather a family of products, is a set of products \(P = \{p_1, p_2, \ldots, p_k\}\) where each product \(p_i \subseteq F\) is a set of features and for fixed \(i\) and \(j\) such that \(i \neq j\), it does not necessarily follow that \(p_i \cap p_j = \emptyset\).
+Since the nineties, variability-rich software systems development leverages principles from product line engineering, commonly referred to as \textit{feature-oriented programming}~\cite{Prehofer97} and \textit{software product line}~\cite{Clements01} engineering.
+In this context the artifacts, which are well-defined units of software, belong to the set of artifacts \(A = \{a_1, a_2, \ldots, a_n\}\).
+In the product families the similarities and differences are characterized by a set of features \(F = \{f_1, f_2, \ldots, f_m\}\) where each feature \(f_i \subseteq A\) is a set of artifacts.
+A feature is a unit that provides a piece of functionality that satisfies a requirement or represents a design decision. An artifact may be explicitly---via an annotation---or implicitly---via a dependency---associated with a feature.
+Given fixed \(i\) and \(j\) where \(i \neq j\), it does not necessarily follow that \(f_i \cap f_j = \emptyset\).
+A product line, or rather a family of products, is a set of products \(P = \{p_1, p_2, \ldots, p_k\}\) where each product \(p_i \subseteq F\) is a set of features and for fixed \(i\) and \(j\) holds that \(i \neq j \centernot\implies p_i \cap p_j = \emptyset\), meaning that the disjointness of the features is not guaranteed.
 A key task in SPL engineering is feature modeling, which involves creating and maintaining a \emph{feature model}. The concept of feature model was first introduced by~\citet{Kang90} in the FODA method and serves to represent the variability of a system through its features and their interdependencies. In SPLs, the feature model formalism is essential for configuring software products by defining valid feature sets, known as \emph{configurations}. 
 A configuration \(c:F\rightarrow \{0, 1\}\) is a characteristic function over \(F\) that maps each feature to a boolean value. 
 A feature $f$ is considered \emph{active} if it belongs to a configuration \(c\) such that \(c(f)=1\), otherwise it is \emph{inactive}.
@@ -42,4 +45,37 @@ Numerous approaches, recently analyzed by~\citet{Agh24}, have been proposed to a
 
 \subsection{Centrality Measures}\label{subsec:bg:centrality}
 
-
+Since the early days of social network analysis, \emph{centrality measures} have been used in sociology and psychology to identify the most important nodes in a network~\cite{Seeley49, Bavelas50, Katz53}.
+Over the years, they have played a crucial role being a object of study in graph theory and network analysis~\cite{Borgatti05, Das18, Landherr10}.
+The shared idea is to consider a \emph{network}---which is a graph---on \(n\) nodes indexed by \(i \in \{1, 2, \ldots, n\}\). It is represented by an adjacency matrix \(A \in \mathbb{R}^{n \times n}\), where \(A_{ij} \neq 0\) if there is an edge between nodes \(i\) and \(j\), otherwise \(A_{ij} = 0\).
+According to~\citet{Bloch23}, signs and weights are not always considered by all centrality measures but could be taken into account.
+A centrality measure is a function \(C: \mathbb{R}^{n \times n} \rightarrow \mathbb{R}^n\), where \(C_i(A)\) is a real number that represents the importance of node \(i\) in the network \(A\).
+It is a cardinal invariant, meaning that an ordinal ranking of nodes can be obtained by comparing the values of \(C_i(A)\) for all \(i\).
+They can be classified into two main categories: \emph{geometry-based} and \emph{spectral-based}~\cite{Boldi14}.
+In the following, we introduce some of the most common centrality measures.
+The \emph{degree centrality} is a measure that assigns a value to a node based on the number of edges incident to it, denoted as \(\text{d}^{-}(i)\) for the in-degree and \(\text{d}^{+}(i)\) for the out-degree. 
+The \emph{closeness centrality} introduced by~\citet{Bavelas50} could not be computed for disconnected graphs because of the potential division by zero, so it has been ``patched'' as follows:
+\begin{equation}
+\text{Clo}_i(A) = \frac{1}{\underset{d(i, j)<\infty}{\sum_{j=1}^{n}}d(i, j)}
+\end{equation}
+where \(d(i, j)\) is the shortest path length between nodes \(i\) and \(j\).
+The \emph{harmonic centrality}~\cite{Marchiori00} is the reciprocal of the sum of the shortest path lengths between a node and all other nodes:
+The \emph{betweenness centrality}~\cite{Freeman77} is a measure of the number of shortest paths that pass through a node:
+\begin{equation}
+\text{Bet}_i(A) = \sum_{s\neq i\neq t}\frac{\sigma_{st}(i)}{\sigma_{st}}
+\end{equation}
+where \(\sigma_{st}\) is the number of shortest paths between nodes \(s\) and \(t\) and \(\sigma_{st}(i)\) is the number of shortest paths between nodes \(s\) and \(t\) that pass through node \(i\).
+The \emph{eigenvector centrality}~\cite{Bonacich72} is a measure that assigns a value to a node based on the centrality of its neighbors, in linear algebra terms, \(\text{Eig}(A)\) is the eigenvector associated with the largest eigenvalue \(\lambda\) of the adjacency matrix \(A\):
+\begin{equation}
+\lambda\boldsymbol{v} = A\boldsymbol{v}
+\end{equation}
+The \emph{Katz centrality}~\cite{Katz53} considers the number of paths of different lengths that connect a node to all other nodes, in linear algebra terms:
+\begin{equation}
+\boldsymbol{k} = \boldsymbol{1}(1 - \beta A)^{-1}
+\end{equation}
+where \(\boldsymbol{1}\) is a vector of ones and \(\beta\) is a dumping factor that must be less than \(1/\lambda\) where \(\lambda\) is the dominant eigenvalue of \(A\).
+The \emph{PageRank}~\cite{Brin98} is a variant of the Katz centrality that considers the probability of a random walker to visit a node, in linear algebra terms, it is a unique solution of the following equation:
+\begin{equation}
+\boldsymbol{p} = \alpha \boldsymbol{p} \overline{A} + (1 - \alpha)\boldsymbol{v}
+\end{equation}
+where \(\overline{A}\) is \(l_1\)-normalized adjacency matrix, \(\boldsymbol{v}\) is a \emph{preference vector} (must be a distribution), and \(\alpha \in [0, 1)\) is a dumping factor.

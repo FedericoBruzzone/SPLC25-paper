@@ -3,6 +3,7 @@
 
 % \documentclass[sigplan,screen]{acmart}
 \documentclass[sigconf,review]{acmart}
+
 %%
 %% \BibTeX command to typeset BibTeX logo in the docs
 \AtBeginDocument{%
@@ -68,11 +69,14 @@
 %%
 %% end of the preamble, start of the body of the document source.
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[greek,english]{babel}
 \let\Bbbk\relax % Acmart load amssymb which defines \Bbbk
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Uncommenting the next command when the bios are needed
 % \usepackage{wrapfig}
@@ -82,16 +86,18 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Aliases
+\newcommand{\tool}[1]{\textsc{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \let\Bbbk\relax % Acmart load amssymb which defines \Bbbk
-\usepackage{showcode}
+% \usepackage{showcode}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[on]{dowecomment?}
 \newcommand{\cwcomment}[1]{\usercomment{CW}{BloodRed}{#1}}
 \newcommand{\bfcomment}[1]{\usercomment{BF}{Teal}{#1}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Aliases
-\newcommand{\tool}[1]{\textsc{#1}}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{minted}
+% \usemintedstyle{vs}
 
 \begin{document}
 
@@ -213,7 +219,7 @@
 %% the bibliography file.
 \bibliographystyle{ACM-Reference-Format}
 % \bibliography{sample-base}
-\bibliography{local,strings,metrics,programming,software_engineering,software_architecture,dsl,pl,splc,oolanguages,my_work,grammars,security,roles,learning,cop,testing,dsu,distributed_systems,reflection,aosd,pattern,logic}
+\bibliography{local,strings,metrics,programming,software_engineering,software_architecture,dsl,pl,splc,oolanguages,my_work,grammars,security,roles,learning,cop,testing,dsu,distributed_systems,reflection,aosd,pattern,logic,webservice}
 
 % \input sects/bios
 

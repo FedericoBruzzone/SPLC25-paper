@@ -77,7 +77,7 @@ endef
 
 # =============== CLEANING ===============
 define clean_latex
-	rm -rf $(dir $1)*.aux $(dir $1)*.bbl $(dir $1)*.blg $(dir $1)*.log $(dir $1)*.out $(dir $1)*.spl $(dir $1)*.synctex.gz $(dir $1)*.toc $(dir $1)*.bcf $(dir $1)*.run.xml $(dir $1)*.nav $(dir $1)*.snm $(dir $1)*.vrb $(dir $1)*.fdb_latexmk $(dir $1)*.fls $(dir $1).$(NAME)-cache $(dir $1).$(NAME)-cache/
+	rm -rf $(dir $1)*.aux $(dir $1)*.bbl $(dir $1)*.blg $(dir $1)*.log $(dir $1)*.out $(dir $1)*.spl $(dir $1)*.synctex.gz $(dir $1)*.toc $(dir $1)*.bcf $(dir $1)*.run.xml $(dir $1)*.nav $(dir $1)*.snm $(dir $1)*.vrb $(dir $1)*.fdb_latexmk $(dir $1)*.fls $(dir $1).$(NAME)-cache $(dir $1).$(NAME)-cache/ $(dir $1)*.lof $(dir $1)*.lot $(dir $1)*.xdv $(dir $1)*.blg $(dir $1)*.bbl $(dir $1)*.dvi $(dir $1)*.bak $(dir $1)_minted*
 endef
 
 define clean_figs
